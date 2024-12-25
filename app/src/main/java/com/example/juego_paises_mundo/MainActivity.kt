@@ -15,10 +15,9 @@ import com.google.gson.JsonObject
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var GestorFavoritos: GestorFavoritos
-    lateinit var paisesList: List<CPais>
-    lateinit var paisesFiltrados: List<CPais>
-    lateinit var paisAdapter: PaisAdapter
+    private lateinit var paisesList: List<CPais>
+    private lateinit var paisesFiltrados: List<CPais>
+    private lateinit var paisAdapter: PaisAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.rvPaises)
 
         val paisesList = cargaPaises()
-
         paisesFiltrados = paisesList
 
         paisAdapter = PaisAdapter(paisesFiltrados, this)
@@ -82,7 +80,15 @@ class MainActivity : AppCompatActivity() {
 
             R.id.Favoritos->{
 
-                paisesFiltrados = paisesList.filter { GestorFavoritos.esFav(this, it.code_3) }
+                paisesList = cargaPaises()
+
+                item.isChecked = !item.isChecked
+
+                paisesFiltrados = if (item.isChecked) {
+                    paisesList.filter { GestorFavoritos.esFav(this, it.code_3) }
+                } else {
+                    paisesList
+                }
 
                 paisAdapter.updateList(paisesFiltrados)
                 true

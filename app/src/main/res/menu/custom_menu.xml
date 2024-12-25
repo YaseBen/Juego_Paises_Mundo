@@ -11,6 +11,9 @@
                 android:id="@+id/Favoritos"
                 android:checkable="true"
                 android:title="Favoritos" />
+            <item
+                android:checkable="true"
+                android:title="Pais " />
 
         </menu>
     </item>
