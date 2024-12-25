@@ -4,4 +4,11 @@
     <color name="primary_variant">#FFFFFF</color>
     <color name="secondary">#1E3E62</color>
     <color name="third">#0B192C</color>
+    <color name="europe_color">#A7C7E7</color>
+    <color name="asia_color">#B9E4D9</color>
+    <color name="america_color">#F5C7C7</color>
+    <color name="americasur_color">#E6E6FA</color>
+    <color name="africa_color">#F7D1B1</color>
+    <color name="oceania_color">#C9A8D4</color>
+    <color name="default_color">#E0E0E0</color>
 </resources>

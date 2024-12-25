@@ -10,16 +10,18 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken
-import java.io.InputStreamReader
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var GestorFavoritos: GestorFavoritos
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         setContentView(R.layout.activity_main)
-        setContentView(R.layout.activity_recycleview)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -27,14 +29,28 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val inputStream = resources.openRawResource(R.raw.paises)
-        val reader = InputStreamReader(inputStream)
-        val type = object : TypeToken<List<CPais>>() {}.type
-        val countries: List<CPais> = Gson().fromJson(reader, type)
+        val recyclerView: RecyclerView = findViewById(R.id.rvPaises)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.rvPaises)
+        val paisesList = cargaPaises()
+
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = PaisAdapter(countries)
+        recyclerView.adapter = PaisAdapter(paisesList,this)
+
+    }
+
+    private fun cargaPaises(): List<CPais> {
+
+        val jsonInputStream = resources.openRawResource(R.raw.paises)
+        val jsonString = jsonInputStream.bufferedReader().use { it.readText() }
+
+        val gson = Gson()
+        val jsonObject = gson.fromJson(jsonString, JsonObject::class.java)
+
+        val jsonArray = jsonObject.getAsJsonArray("countries")
+
+        return jsonArray.map { elementoJson ->
+            gson.fromJson(elementoJson,CPais::class.java)
+        }
 
     }
 

@@ -1,8 +1,9 @@
 package com.example.juego_paises_mundo
 
-class CPais(nombre: String, continente: String, capital: String, km2: Int) {
-    var nombre_es: String,
-    var continente_es: String,
-    var capital_es: String,
-    var km2: Int = 0
-}
+data class CPais(
+    val name_es: String,
+    val continent_es: String,
+    val capital_es: String,
+    val km2: Int,
+    val code_3: String,
+)

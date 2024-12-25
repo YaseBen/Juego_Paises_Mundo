@@ -21,7 +21,7 @@ class recycle: AppCompatActivity() {
         myRecyclerView.setHasFixedSize(true)
         myRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        mAdapter = PaisAdapter(getPaises())
+        mAdapter = PaisAdapter(getPaises(), this)
         myRecyclerView.adapter = mAdapter
     }
 
@@ -44,8 +44,9 @@ class recycle: AppCompatActivity() {
             val capital = pais.getString("capital_es")
             val continente = pais.getString("continent_es")
             val km2 = pais.getInt("km2")
+            val code_3 = pais.getString("code_3")
 
-            paisos.add(CPais(nombre, continente, capital, km2))
+            paisos.add(CPais(nombre, continente, capital, km2, code_3))
         }
 
         return paisos
