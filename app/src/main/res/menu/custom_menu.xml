@@ -8,6 +8,7 @@
         app:showAsAction="always">
         <menu>
             <item
+                android:id="@+id/Favoritos"
                 android:checkable="true"
                 android:title="Favoritos" />
 

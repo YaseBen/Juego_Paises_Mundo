@@ -16,6 +16,9 @@ import com.google.gson.JsonObject
 class MainActivity : AppCompatActivity() {
 
     lateinit var GestorFavoritos: GestorFavoritos
+    lateinit var paisesList: List<CPais>
+    lateinit var paisesFiltrados: List<CPais>
+    lateinit var paisAdapter: PaisAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +36,11 @@ class MainActivity : AppCompatActivity() {
 
         val paisesList = cargaPaises()
 
+        paisesFiltrados = paisesList
+
+        paisAdapter = PaisAdapter(paisesFiltrados, this)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = PaisAdapter(paisesList,this)
+        recyclerView.adapter = paisAdapter
 
     }
 
@@ -49,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         val jsonArray = jsonObject.getAsJsonArray("countries")
 
         return jsonArray.map { elementoJson ->
-            gson.fromJson(elementoJson,CPais::class.java)
+            gson.fromJson(elementoJson, CPais::class.java)
         }
 
     }
@@ -64,6 +70,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         return when(item.itemId){
+
             R.id.Play->{
 
                 val intent = Intent(this,PlayActivity::class.java)
@@ -71,6 +78,15 @@ class MainActivity : AppCompatActivity() {
                 finish()
 
                 return true
+            }
+
+            R.id.Favoritos->{
+
+                paisesFiltrados = paisesList.filter { GestorFavoritos.esFav(this, it.code_3) }
+
+                paisAdapter.updateList(paisesFiltrados)
+                true
+
             }
 
             else -> {

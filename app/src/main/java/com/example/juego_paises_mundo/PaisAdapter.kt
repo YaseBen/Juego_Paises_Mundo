@@ -10,7 +10,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
 class PaisAdapter(
-    private val paises: List<CPais>,
+    private var paises: List<CPais>,
     private val context: Context
 ): RecyclerView.Adapter<PaisAdapter.PaisViewHolder>() {
 
@@ -30,6 +30,11 @@ class PaisAdapter(
     }
 
     override fun getItemCount(): Int = paises.size
+
+    fun updateList(newPaises: List<CPais>) {
+        paises = newPaises
+        notifyDataSetChanged()
+    }
 
     inner class PaisViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
