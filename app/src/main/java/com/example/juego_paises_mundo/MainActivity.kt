@@ -95,6 +95,64 @@ class MainActivity : AppCompatActivity() {
 
             }
 
+            R.id.P_Asc->{
+
+                item.isChecked = !item.isChecked
+
+                paisesFiltrados = if(item.isChecked){
+                    paisesFiltrados.sortedBy{it.name_es}
+                } else {
+                    cargaPaises()
+                }
+
+                paisAdapter.updateList(paisesFiltrados)
+
+                true
+            }
+
+            R.id.P_Desc->{
+
+                item.isChecked = !item.isChecked
+
+                paisesFiltrados = if (item.isChecked){
+                    paisesFiltrados.sortedByDescending { it.name_es }
+                } else {
+                    cargaPaises()
+                }
+
+                paisAdapter.updateList(paisesFiltrados)
+
+                true
+            }
+
+            R.id.C_Asc->{
+
+                item.isChecked = !item.isChecked
+
+                paisesFiltrados = if (item.isChecked){
+                    paisesFiltrados.sortedBy { it.capital_es }
+                } else {
+                    cargaPaises()
+                }
+
+                paisAdapter.updateList(paisesFiltrados)
+
+                true
+            }
+
+            R.id.C_Desc->{
+
+                item.isChecked = !item.isChecked
+
+                paisesFiltrados = if (item.isChecked){
+                    paisesFiltrados.sortedByDescending { it.capital_es }
+                } else {
+                    cargaPaises()
+                }
+
+                true
+            }
+
             else -> {
                 super.onOptionsItemSelected(item)
             }

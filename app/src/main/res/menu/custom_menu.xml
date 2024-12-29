@@ -12,8 +12,23 @@
                 android:checkable="true"
                 android:title="Favoritos" />
             <item
+                android:id="@+id/P_Asc"
                 android:checkable="true"
-                android:title="Pais " />
+                android:title="Pais Asc." />
+            <item
+                android:id="@+id/P_Desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:title="Pais Desc." />
+            <item
+                android:id="@+id/C_Asc"
+                android:checkable="true"
+                android:title="Capital Asc." />
+            <item
+                android:id="@+id/C_Desc"
+                android:checkable="true"
+                android:title="Capital Desc." />
 
         </menu>
     </item>
