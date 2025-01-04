@@ -71,7 +71,10 @@ class MainActivity : AppCompatActivity() {
 
             R.id.Play->{
 
+                val paisesList = cargaPaises()
+
                 val intent = Intent(this,PlayActivity::class.java)
+                intent.putExtra("paisesList",ArrayList(paisesList))
                 startActivity(intent)
                 finish()
 
