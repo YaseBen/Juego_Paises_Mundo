@@ -1,6 +1,10 @@
 package com.example.juego_paises_mundo
 
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -28,6 +32,11 @@ class PlayActivity : AppCompatActivity(){
             insets
         }
 
+        generadorPregunta()
+
+    }
+
+    private fun generadorPregunta() {
         val random = paisesList.random()
         val randomPais = random.name_es
         val randomCapital = random.capital_es
@@ -45,7 +54,7 @@ class PlayActivity : AppCompatActivity(){
 
         randomB.text = randomCapital
 
-        for (i in 1..3){
+        for (i in 0..3){
 
             if (buttonList[i]==randomB){
 
@@ -56,6 +65,34 @@ class PlayActivity : AppCompatActivity(){
 
                 button.text = randomCapital
             }
+        }
+
+        for (button in buttonList) {
+            button.setOnClickListener {
+                if (button.text == randomCapital) {
+                    button.setBackgroundColor(Color.parseColor("#186a3b"))
+                } else {
+                    button.setBackgroundColor(Color.parseColor("#a93226"))
+                    val intent = Intent(this,MainActivity::class.java)
+                    startActivity(intent)
+                }
+
+                buttonList.forEach { it.isEnabled = false }
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    reseteoBotones(buttonList)
+                    generadorPregunta()
+                }, 1000)
+                
+            }
+        }
+    }
+
+    private fun reseteoBotones(buttonList: List<Button>) {
+        for (button in buttonList){
+            button.isEnabled = true
+            button.setBackgroundColor(Color.parseColor("#FF6500"))
+            button.text = ""
         }
     }
 
