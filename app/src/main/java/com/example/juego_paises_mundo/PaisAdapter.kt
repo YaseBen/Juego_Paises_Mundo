@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class PaisAdapter(
     private var paises: List<CPais>,
-    private val context: Context
+    private val context: Context,
+    private val onItemClick:(CPais)-> Unit
 ): RecyclerView.Adapter<PaisAdapter.PaisViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaisAdapter.PaisViewHolder {
@@ -27,6 +28,10 @@ class PaisAdapter(
         val pais = paises[position]
         holder.bind(pais)
 
+        holder.ivWikipedia.setOnClickListener{
+            onItemClick(pais)
+        }
+
     }
 
     override fun getItemCount(): Int = paises.size
@@ -38,6 +43,7 @@ class PaisAdapter(
 
     inner class PaisViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
+        val ivWikipedia: ImageView = itemView.findViewById(R.id.ivWikipedia)
         val tvNombre: TextView = itemView.findViewById(R.id.tvNombre)
         val tvCapital: TextView = itemView.findViewById(R.id.tvCapital)
         val tvContinente: TextView = itemView.findViewById(R.id.tvContinente)

@@ -1,9 +1,11 @@
 package com.example.juego_paises_mundo
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,10 +21,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var paisesFiltrados: List<CPais>
     private lateinit var paisAdapter: PaisAdapter
 
-    private var filtroFavoritos = false
-    private val continentesSeleccionados = mutableSetOf<String>()
-    private var filtroCapitalesAsc = false
-    private var filtroCapitalesDesc = false
+    private var filtroContinente: String? = null
+    private var filtroOrdenPaisAscendente: Boolean = false
+    private var filtroOrdenPaisDescendente: Boolean = false
+    private var filtroOrdenCapitalAscendente: Boolean = false
+    private var filtroOrdenCapitalDescendente: Boolean = false
+    private var soloFavoritos: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +45,15 @@ class MainActivity : AppCompatActivity() {
         paisesList = cargaPaises()
         paisesFiltrados = paisesList
 
-        paisAdapter = PaisAdapter(paisesFiltrados, this)
+        paisAdapter = PaisAdapter(paisesFiltrados, this){ pais ->
+
+            val wikipediaUrl = "https://es.wikipedia.org/wiki/${pais.name_es.replace(" ", "_")}"
+
+            val uri = Uri.parse(wikipediaUrl)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+
+        }
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = paisAdapter
 
@@ -86,17 +98,9 @@ class MainActivity : AppCompatActivity() {
 
             R.id.Favoritos->{
 
-                paisesList = cargaPaises()
-
                 item.isChecked = !item.isChecked
-
-                paisesFiltrados = if (item.isChecked) {
-                    paisesList.filter { GestorFavoritos.esFav(this, it.code_3) }
-                } else {
-                    paisesList
-                }
-
-                paisAdapter.updateList(paisesFiltrados)
+                soloFavoritos = item.isChecked
+                aplicarFiltros()
                 true
 
             }
@@ -104,77 +108,48 @@ class MainActivity : AppCompatActivity() {
             R.id.P_Asc->{
 
                 item.isChecked = !item.isChecked
-
-                paisesFiltrados = if(item.isChecked){
-                    paisesFiltrados.sortedBy{it.name_es}
-                } else {
-                    cargaPaises()
-                }
-
-                paisAdapter.updateList(paisesFiltrados)
-
+                filtroOrdenPaisAscendente = item.isChecked
+                filtroOrdenPaisDescendente = false
+                aplicarFiltros()
                 true
             }
 
             R.id.P_Desc->{
 
                 item.isChecked = !item.isChecked
-
-                paisesFiltrados = if (item.isChecked){
-                    paisesFiltrados.sortedByDescending { it.name_es }
-                } else {
-                    cargaPaises()
-                }
-
-                paisAdapter.updateList(paisesFiltrados)
-
+                filtroOrdenPaisDescendente = item.isChecked
+                filtroOrdenPaisAscendente = false
+                aplicarFiltros()
                 true
             }
 
             R.id.C_Asc->{
 
                 item.isChecked = !item.isChecked
-
-                paisesFiltrados = if (item.isChecked){
-                    paisesFiltrados.sortedBy { it.capital_es }
-                } else {
-                    cargaPaises()
-                }
-
-                paisAdapter.updateList(paisesFiltrados)
-
+                filtroOrdenCapitalAscendente = item.isChecked
+                filtroOrdenCapitalDescendente = false
+                aplicarFiltros()
                 true
             }
 
             R.id.C_Desc->{
 
                 item.isChecked = !item.isChecked
-
-                paisesFiltrados = if (item.isChecked){
-                    paisesFiltrados.sortedByDescending { it.capital_es }
-                } else {
-                    cargaPaises()
-                }
-
+                filtroOrdenCapitalDescendente = item.isChecked
+                filtroOrdenCapitalAscendente = false
+                aplicarFiltros()
                 true
             }
 
             R.id.cAfrica, R.id.cAsia, R.id.cEuropa, R.id.cAdN, R.id.cAdS, R.id.cOceania -> {
 
                 item.isChecked = !item.isChecked
-
-                if (item.isChecked) {
-
-                    filtrarPorContinente(item.title.toString())
-
+                filtroContinente = if (item.isChecked) {
+                    item.title.toString()
                 } else {
-
-                    paisesFiltrados = cargaPaises()
-
+                    null
                 }
-
-                paisAdapter.updateList(paisesFiltrados)
-
+                aplicarFiltros()
                 true
             }
 
@@ -184,10 +159,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun filtrarPorContinente(toString: String) {
+    private fun aplicarFiltros() {
+        paisesFiltrados = paisesList
 
-        paisesList = cargaPaises()
-        paisesFiltrados = paisesList.filter { it.continent_es == toString }
+        filtroContinente?.let { continente ->
+            paisesFiltrados = paisesFiltrados.filter { it.continent_es == continente }
+        }
 
+        if (soloFavoritos) {
+            paisesFiltrados = paisesFiltrados.filter { GestorFavoritos.esFav(this, it.code_3) }
+        }
+
+        when {
+            filtroOrdenPaisAscendente -> paisesFiltrados = paisesFiltrados.sortedBy { it.name_es }
+            filtroOrdenPaisDescendente -> paisesFiltrados = paisesFiltrados.sortedByDescending { it.name_es }
+        }
+
+        when {
+            filtroOrdenCapitalAscendente -> paisesFiltrados = paisesFiltrados.sortedBy { it.capital_es }
+            filtroOrdenCapitalDescendente -> paisesFiltrados = paisesFiltrados.sortedByDescending { it.capital_es }
+        }
+
+        paisAdapter.updateList(paisesFiltrados)
     }
 }

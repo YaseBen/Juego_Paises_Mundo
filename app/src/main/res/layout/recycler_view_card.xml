@@ -93,6 +93,14 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/baseline_star_border_24" />
 
+            <ImageView
+                android:id="@+id/ivWikipedia"
+                android:layout_width="31dp"
+                android:layout_height="24dp"
+                app:layout_constraintEnd_toStartOf="@+id/ivStar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/wikipedialogo" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

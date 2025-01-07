@@ -1,5 +1,7 @@
 package com.example.juego_paises_mundo
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,12 +23,20 @@ class recycle: AppCompatActivity() {
         myRecyclerView.setHasFixedSize(true)
         myRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        mAdapter = PaisAdapter(getPaises(), this)
+        mAdapter = PaisAdapter(getPaises(), this) { pais->
+
+            val wikipediaUrl = "https://es.wikipedia.org/wiki/${pais.name_es.replace(" ", "_")}"
+
+            val uri = Uri.parse(wikipediaUrl)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+
+        }
         myRecyclerView.adapter = mAdapter
     }
 
     private fun getPaises(): List<CPais> {
-        val paisos = mutableListOf<CPais>() // Lista de objetos cPais
+        val paisos = mutableListOf<CPais>()
 
         val inputStream = assets.open("paisos.json")
         val size = inputStream.available()

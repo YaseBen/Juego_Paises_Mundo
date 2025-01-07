@@ -73,6 +73,7 @@ class PlayActivity : AppCompatActivity(){
                     button.setBackgroundColor(Color.parseColor("#186a3b"))
                 } else {
                     button.setBackgroundColor(Color.parseColor("#a93226"))
+                    randomB.setBackgroundColor(Color.parseColor("#186a3b"))
                     val intent = Intent(this,MainActivity::class.java)
                     startActivity(intent)
                 }
