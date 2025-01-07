@@ -19,6 +19,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var paisesFiltrados: List<CPais>
     private lateinit var paisAdapter: PaisAdapter
 
+    private var filtroFavoritos = false
+    private val continentesSeleccionados = mutableSetOf<String>()
+    private var filtroCapitalesAsc = false
+    private var filtroCapitalesDesc = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -33,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.rvPaises)
 
-        val paisesList = cargaPaises()
+        paisesList = cargaPaises()
         paisesFiltrados = paisesList
 
         paisAdapter = PaisAdapter(paisesFiltrados, this)
@@ -71,10 +76,8 @@ class MainActivity : AppCompatActivity() {
 
             R.id.Play->{
 
-                val paisesList = cargaPaises()
-
                 val intent = Intent(this,PlayActivity::class.java)
-                intent.putExtra("paisesList",ArrayList(paisesList))
+                intent.putExtra("paisesFiltrados",ArrayList(paisesFiltrados))
                 startActivity(intent)
                 finish()
 
@@ -156,9 +159,35 @@ class MainActivity : AppCompatActivity() {
                 true
             }
 
+            R.id.cAfrica, R.id.cAsia, R.id.cEuropa, R.id.cAdN, R.id.cAdS, R.id.cOceania -> {
+
+                item.isChecked = !item.isChecked
+
+                if (item.isChecked) {
+
+                    filtrarPorContinente(item.title.toString())
+
+                } else {
+
+                    paisesFiltrados = cargaPaises()
+
+                }
+
+                paisAdapter.updateList(paisesFiltrados)
+
+                true
+            }
+
             else -> {
                 super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    private fun filtrarPorContinente(toString: String) {
+
+        paisesList = cargaPaises()
+        paisesFiltrados = paisesList.filter { it.continent_es == toString }
+
     }
 }

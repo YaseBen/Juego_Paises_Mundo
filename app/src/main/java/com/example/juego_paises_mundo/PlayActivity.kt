@@ -24,7 +24,7 @@ class PlayActivity : AppCompatActivity(){
 
         setContentView(R.layout.activity_play)
 
-        paisesList = (intent.getSerializableExtra("paisesList") as? ArrayList<CPais>)!!
+        paisesList = (intent.getSerializableExtra("paisesFiltrados") as? ArrayList<CPais>)!!
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

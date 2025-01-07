@@ -29,6 +29,34 @@
                 android:id="@+id/C_Desc"
                 android:checkable="true"
                 android:title="Capital Desc." />
+            <item android:title="Continentes">
+                <menu >
+                    <item
+                        android:id="@+id/cAfrica"
+                        android:checkable="true"
+                        android:title="África" />
+                    <item
+                        android:id="@+id/cAsia"
+                        android:checkable="true"
+                        android:title="Asia" />
+                    <item
+                        android:id="@+id/cEuropa"
+                        android:checkable="true"
+                        android:title="Europa" />
+                    <item
+                        android:id="@+id/cAdN"
+                        android:checkable="true"
+                        android:title="América del Norte" />
+                    <item
+                        android:id="@+id/cAdS"
+                        android:checkable="true"
+                        android:title="América del Sur" />
+                    <item
+                        android:id="@+id/cOceania"
+                        android:checkable="true"
+                        android:title="Oceanía" />
+                </menu>
+            </item>
 
         </menu>
     </item>

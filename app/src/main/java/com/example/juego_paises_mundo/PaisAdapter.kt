@@ -52,6 +52,12 @@ class PaisAdapter(
             tvContinente.text = pais.continent_es
             tvKm2.text = pais.km2.toString()
 
+            if (pais.km2 >= 1_000_000) {
+                tvKm2.setTypeface(null,android.graphics.Typeface.BOLD)
+            } else {
+                tvKm2.setTypeface(null, android.graphics.Typeface.NORMAL)
+            }
+
             val color = when (pais.continent_es) {
                 "África" -> itemView.context.getColor(R.color.africa_color)
                 "Asia" -> itemView.context.getColor(R.color.asia_color)
